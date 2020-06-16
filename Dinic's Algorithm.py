@@ -17,13 +17,13 @@ def Bfs(C, F, s, t):  # C is the capacity matrix
         return level[t] > 0
 
 #search augmenting path by using DFS
-def Dfs(C, F, k, cp):
+def Dfs(C, F, k, cp,t):
         tmp = cp
-        if k == len(C)-1:
+        if k == t:      #Reached sink
             return cp
         for i in range(len(C)):
             if (level[i] == level[k] + 1) and (F[k][i] < C[k][i]):
-                f = Dfs(C,F,i,min(tmp,C[k][i] - F[k][i]))
+                f = Dfs(C,F,i,min(tmp,C[k][i] - F[k][i]),t)
                 F[k][i] = F[k][i] + f
                 F[i][k] = F[i][k] - f
                 tmp = tmp - f
@@ -36,7 +36,7 @@ def MaxFlow(C,s,t):
         F = [n*[0] for i in range(n)] # F is the flow matrix
         flow = 0
         while(Bfs(C,F,s,t)):
-               flow = flow + Dfs(C,F,s,100000)
+               flow = flow + Dfs(C,F,s,100000,t)
         return flow
 
 #-------------------------------------
